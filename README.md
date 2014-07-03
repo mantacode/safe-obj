@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/tandrewnichols/safe-obj.png)](https://travis-ci.org/tandrewnichols/safe-obj)
+[![Build Status](https://travis-ci.org/mantacode/safe-obj.png)](https://travis-ci.org/mantacode/safe-obj)
 
 # Safe-obj
 
