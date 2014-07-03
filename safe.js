@@ -1,85 +1,94 @@
-;(function(self) {
+var _ = typeof require === 'function' ? require('underscore') : _;
 
-  self.safe = function (obj, path, otherwise) {
-    obj = isObject(obj) ? obj : {};
-    var props = path.split('.');
-    if (props.length === 1) {
-      return typeof obj[props[0]] === 'undefined' ? otherwise : obj[props.shift()];
+function safe(obj, path, otherwise) {
+  obj = _(obj).isObject()  && obj !== null ? obj : {};
+  var props = path.split('.');
+  if (props.length === 1) {
+    if (typeof obj[props[0]] === 'undefined') {
+      return otherwise;
+    } else if (obj[props[0]] === null) {
+      return typeof otherwise === 'undefined' ? null : otherwise;
     } else {
-      var prop = props.shift();
-      return isObject(obj) ? self.safe(obj[prop], props.join('.'), otherwise) : otherwise;
+      return obj[props.shift()];
     }
-  };
+  } else {
+    var prop = props.shift();
+    return _(obj[prop]).isObject() ? safe(obj[prop], props.join('.'), otherwise) : otherwise;
+  }
+}
 
-  self.expand = function (obj, path, thing) {
-    obj = isObject(obj) ? obj : {};
-    var props = path.split('.');
-    if (props.length === 1) {
-      obj[props.shift()] = thing;
-    } else {
-      var prop = props.shift();
-      if (!(prop in obj)) {
-        obj[prop] = {};
-      }
-      self.expand(obj[prop], props.join('.'), thing);
+function expand(obj, path, thing) {
+  obj = _(obj).isObject() && obj !== null ? obj : {};
+  var props = path.split('.');
+  if (props.length === 1) {
+    obj[props.shift()] = thing;
+  } else {
+    var prop = props.shift();
+    if (!(prop in obj)) {
+      obj[prop] = {};
     }
+    expand(obj[prop], props.join('.'), thing);
+  }
+}
+
+function ensure(obj, path, disallowed, otherwise) {
+  if (arguments.length === 3) {
+    otherwise = disallowed;
+    disallowed = [];
+  }
+  var current = safe(obj, path);
+  if  (!current || _(disallowed).any(function(item) { return _(item).isEqual(current); })) {
+    expand(obj, path, otherwise);
+  }
+}
+
+function allOf() {
+  var paths = [], obj = {};
+  if (_(arguments[1]).isArray()) {
+    obj = arguments[0];
+    paths = arguments[1];
+  } else {
+    paths = [].slice.call(arguments);
+    obj = paths.shift();
+  }
+  if (_(obj).isObject()) {
+    return _(paths).every(function(path) {
+      return !!safe(obj, path);
+    });
+  } else {
+    return false;
+  }
+}
+
+function anyOf() {
+  var paths = [], obj = {};
+  if (_(arguments[1]).isArray()) {
+    obj = arguments[0];
+    paths = arguments[1];
+  } else {
+    paths = [].slice.call(arguments);
+    obj = paths.shift();
+  }
+  if (_(obj).isObject()) {
+    return _(paths).any(function(path) {
+      return !!safe(obj, path);
+    });
+  } else {
+    return false;
+  }
+}
+
+function noneOf() {
+  return !anyOf.apply(_, arguments);
+}
+
+if (typeof module === 'object') {
+  module.exports = {
+    safe: safe,
+    expand: expand,
+    ensure: ensure,
+    allOf: allOf,
+    anyOf: anyOf,
+    noneOf: noneOf
   };
-
-  self.allOf = function(obj, paths) {
-    if (!isArray(arguments[1])) {
-      paths = [].slice.call(arguments);
-      obj = paths.shift();
-    }
-    if (isObject(obj)) {
-      return every(paths, function(path) {
-        return !!self.safe(obj, path);
-      });
-    }
-  };
-
-  self.anyOf = function (obj, paths) {
-    if (!isArray(arguments[1])) {
-      paths = [].slice.call(arguments);
-      obj = paths.shift();
-    }
-    if (isObject(obj)) {
-      return any(paths, function(path) {
-        return !!self.safe(obj, path);
-      });
-    } else {
-      return false;
-    }
-  };
-
-  self.noneOf = function() {
-    return !self.anyOf.apply(self, arguments);
-  };
-
-  var isObject = function (obj) {
-    return (typeof obj === 'object' || typeof obj === 'function') && obj !== null;
-  };
-
-  var isArray = function (arr) {
-    return arr instanceof Array && arr.splice;
-  };
-
-  var any = function (arr, fn) {
-    var pass = false;
-    for (var i = 0; i < arr.length; i++) {
-      if (fn(arr[i])) {
-        pass = true;
-      }
-    }
-    return pass;
-  };
-
-  var every  = function (arr, fn) {
-    var pass = false;
-    for (var i = 0; i < arr.length; i++) {
-      pass = fn(arr[i]);
-    }
-    return pass;
-  };
-
-
-})(typeof module !== 'undefined' ? module.exports : (typeof window !== 'undefined' ? window.safe = {} : this));
+}

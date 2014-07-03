@@ -2,4 +2,3 @@
 --ui mocha-given
 --compilers coffee:coffee-script
 --recursive
---require should
