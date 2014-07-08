@@ -69,3 +69,79 @@ property: {
 ```
 
 I'd like to make that work more as expected in a future release, but for now, don't expect it to work.
+
+### Ensure
+
+Sets a path to a given value unless that path already has a value. Also allows an optional list of "disallowed" values.
+
+```javascript
+var obj = {
+  foo: {
+    bar: 'baz'
+  }
+};
+
+// This will have no effect on obj since 'foo.bar' already has a value
+_(obj).ensure('foo.bar', 'a default value');
+
+obj = {
+  foo: {}
+};
+
+// This will set obj.foo equal to { bar: 'a default value' }
+_(obj).ensure('foo.bar', 'a default value');
+
+obj = {
+  foo: {
+    bar: 'nope'
+  }
+};
+
+// This says don't allow 'nope' as a value of foo.bar, thus it will use the default
+_(obj).ensure('foo.bar', [ 'nope' ], 'a default value');
+```
+
+### AllOf
+
+Uses `safe` to return `true` if all the paths exist in the object or `false` if any is missing.
+
+```javascript
+var obj = {
+  foo: {
+    bar: 'baz'
+  }
+};
+
+_(obj).allOf('foo.bar', 'hello.world'); // returns false
+
+// or
+// _(obj).allOf(['foo.bar', 'hello.world']);
+```
+
+### AnyOf
+
+Like `allOf` but returns `true` if any of the paths exist.
+
+```javascript
+var obj = {
+  foo: {
+    bar: 'baz'
+  }
+};
+
+_(obj).anyOf('foo.bar', 'hello.world'); // returns true
+```
+
+### NoneOf
+
+Like `allOf` and `anyOf` but only returns true when none of the paths exist.
+
+```javascript
+var obj = {
+  foo: {
+    bar: 'baz'
+  }
+};
+
+_(obj).noneOf('foo.bar', 'hello.world'); // returns false
+```
