@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/mantacode/safe-obj.png)](https://travis-ci.org/mantacode/safe-obj)
+[![Build Status](https://travis-ci.org/mantacode/safe-obj.png)](https://travis-ci.org/mantacode/safe-obj) [![downloads](http://img.shields.io/npm/dm/safe-obj.svg)](https://npmjs.org/package/safe-obj) [![npm](http://img.shields.io/npm/v/safe-obj.svg)](https://npmjs.org/package/safe-obj)
 
 # Safe-obj
 
