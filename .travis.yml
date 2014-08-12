@@ -2,8 +2,8 @@ language: node_js
 before_install:
   - "export ROOT=$(pwd)"
 install:
+  - "npm install mocha@1.16.0"
   - "npm install"
-  - "cd node_modules/mocha-given && npm install && cd $ROOT"
 node_js:
   - "0.8"
   - "0.10"
