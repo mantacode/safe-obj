@@ -64,6 +64,14 @@ describe 'underscore.safe', ->
       When -> @result = _(@obj).safe('foo.bar')
       Then -> expect(@result).to.equal null
 
+    context 'with no path and no default', ->
+      When -> @result = _({}).safe(undefined)
+      Then -> expect(@result).to.equal undefined
+
+    context 'with no path and a default', ->
+      When -> @result = _({}).safe(undefined, {})
+      Then -> expect(@result).to.deep.equal {}
+
   describe '.expand', ->
     context 'with an empty object', ->
       Given -> @obj = {}
@@ -101,7 +109,17 @@ describe 'underscore.safe', ->
       And -> expect(@obj.foo.bar).to.equal 'baz'
 
     context 'with null', ->
-      Then -> expect(=> _.expand(null, 'path', [1])).not.to.throw()
+      Then -> expect(-> _.expand(null, 'path', [1])).not.to.throw()
+
+    context 'with no path', ->
+      Given -> @obj = {}
+      When -> _(@obj).expand(undefined, 'foo')
+      Then -> expect(@obj).to.deep.equal {}
+
+    context 'with no value', ->
+      Given -> @obj = {}
+      When -> _(@obj).expand('foo.bar')
+      Then -> expect(@obj).to.deep.equal {}
 
   describe '.ensure', ->
     context 'already set', ->

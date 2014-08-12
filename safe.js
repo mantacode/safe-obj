@@ -1,6 +1,9 @@
 var _ = typeof require === 'function' ? require('underscore') : _;
 
 function safe(obj, path, otherwise) {
+  if (!path) {
+    return otherwise;
+  }
   obj = _(obj).isObject()  && obj !== null ? obj : {};
   var props = path.split('.');
   if (props.length === 1) {
@@ -18,6 +21,9 @@ function safe(obj, path, otherwise) {
 }
 
 function expand(obj, path, thing) {
+  if (!path || typeof thing === 'undefined') {
+    return;
+  }
   obj = _(obj).isObject() && obj !== null ? obj : {};
   var props = path.split('.');
   if (props.length === 1) {
