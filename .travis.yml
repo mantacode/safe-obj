@@ -2,6 +2,7 @@ language: node_js
 install:
   - "npm install npm -g"
   - "npm install mocha@1.16.0"
+  - "npm install mocha-given@0.0.18"
   - "npm install"
 node_js:
   - "0.8"
