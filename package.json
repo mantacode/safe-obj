@@ -32,7 +32,6 @@
   "devDependencies": {
     "coffee-script": "~1.7.1",
     "underscore": "~1.6.0",
-    "mocha": "git://github.com/tandrewnichols/mocha.git#suppress-stack",
     "mocha-given": "~0.0.18",
     "indeed": "~1.0.1"
   },
