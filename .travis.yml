@@ -1,7 +1,7 @@
 language: node_js
 install:
   - "npm install npm -g"
-  - "npm install mocha@1.16.0"
+  - "npm install mocha@~1.20.1"
   - "npm install $(node -e \"console.log(Object.keys(require('./package').devDependencies).filter(function(k) { return k !== 'mocha'; }).join(' '))\")"
 node_js:
   - "0.8"
