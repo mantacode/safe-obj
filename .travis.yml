@@ -1,11 +1,7 @@
 language: node_js
 install:
   - "npm install npm -g"
-  - "npm install mocha@~1.20.1"
-    # Because of https://github.com/npm/npm/issues/3218, the version of mocha this library uses cannot be installed in conjunction with mocha-given,
-    # since the mocha dependency points to a git repository and mocha-given specifies a peer dependency for mocha. This crazy hack manually reads in
-    # the devDependencies, excludes mocha (which is installed above), and installs them.
-  - "npm install $(node -e \"console.log(Object.keys(require('./package').devDependencies).filter(function(k) { return k !== 'mocha'; }).join(' '))\")"
+  - "npm install"
 node_js:
   - "0.8"
   - "0.10"
