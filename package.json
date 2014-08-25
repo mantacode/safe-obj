@@ -33,6 +33,7 @@
     "coffee-script": "~1.7.1",
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.10.0",
+    "grunt-mocha-cov": "^0.3.0",
     "grunt-mocha-test": "^0.11.0",
     "indeed": "~1.0.1",
     "jshint-stylish": "^0.4.0",
@@ -47,8 +48,13 @@
     "safety",
     "autovivification"
   ],
-  "main": "./safe.js",
+  "main": "./lib/index.js",
   "engines": {
     "node": ">=0.8.0"
+  },
+  "config": {
+    "blanket": {
+      "pattern": [ "safe-obj/lib" ]
+    }
   }
 }

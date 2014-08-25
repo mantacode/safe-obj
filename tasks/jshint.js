@@ -8,5 +8,5 @@ module.exports = {
     newcap: true,
     quotmark: 'single'
   },
-  all: ['./safe.js']
+  all: ['lib/**/*.js']
 };

@@ -1,6 +1,6 @@
 global.expect = require('indeed').expect
 _ = require 'underscore'
-_.mixin(require '../safe')
+_.mixin(require '../lib')
 
 describe 'underscore.safe', ->
   describe '_.safe', ->
