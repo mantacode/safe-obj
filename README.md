@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/mantacode/safe-obj.png)](https://travis-ci.org/mantacode/safe-obj) [![downloads](http://img.shields.io/npm/dm/safe-obj.svg)](https://npmjs.org/package/safe-obj) [![npm](http://img.shields.io/npm/v/safe-obj.svg)](https://npmjs.org/package/safe-obj)
+[![Build Status](https://travis-ci.org/mantacode/safe-obj.png)](https://travis-ci.org/mantacode/safe-obj) [![downloads](http://img.shields.io/npm/dm/safe-obj.svg)](https://npmjs.org/package/safe-obj) [![npm](http://img.shields.io/npm/v/safe-obj.svg)](https://npmjs.org/package/safe-obj) [![Test Coverage](https://codeclimate.com/github/mantacode/safe-obj/badges/coverage.svg)](https://codeclimate.com/github/mantacode/safe-obj) [![Code Climate](https://codeclimate.com/github/mantacode/safe-obj/badges/gpa.svg)](https://codeclimate.com/github/mantacode/safe-obj)
 
 # Safe-obj
 

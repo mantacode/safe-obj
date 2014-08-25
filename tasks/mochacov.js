@@ -1,5 +1,5 @@
 module.exports = {
-  travis: {
+  lcov: {
     options: {
       reporter: 'mocha-lcov-reporter',
       instrument: true,
@@ -9,7 +9,7 @@ module.exports = {
     },
     src: ['test/**/*.coffee'],
   },
-  local: {
+  html: {
     options: {
       reporter: 'html-cov',
       ui: 'mocha-given',
