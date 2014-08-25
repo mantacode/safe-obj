@@ -168,6 +168,18 @@ describe 'underscore.safe', ->
       When -> @res = _(@obj).allOf('foo.nested', 'bar', 'baz.nested')
       Then -> expect(@res).to.equal false
 
+    context 'with array', ->
+      Given -> @obj =
+        foo:
+          nested: 'foo'
+        bar: 'bar'
+      When -> @res = _(@obj).allOf(['foo.nested', 'bar'])
+      Then -> expect(@res).to.equal true
+
+    context 'obj not an object', ->
+      When -> @res = _('blah').allOf(['foo.nested', 'bar'])
+      Then -> expect(@res).to.equal false
+
   describe '.anyOf', ->
     context 'some present', ->
       Given -> @obj =
@@ -183,6 +195,18 @@ describe 'underscore.safe', ->
           nested: 'foo'
         bar: 'bar'
       When -> @res = _(@obj).anyOf('foo.berry', 'baroque', 'baz.nested')
+      Then -> expect(@res).to.equal false
+
+    context 'with array', ->
+      Given -> @obj =
+        foo:
+          nested: 'foo'
+        bar: 'bar'
+      When -> @res = _(@obj).anyOf(['foo.nested', 'bar', 'baz'])
+      Then -> expect(@res).to.equal true
+
+    context 'obj not an object', ->
+      When -> @res = _('blah').anyOf(['foo.nested', 'bar', 'baz'])
       Then -> expect(@res).to.equal false
 
   describe '.noneOf', ->
