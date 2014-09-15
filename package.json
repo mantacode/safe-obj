@@ -37,6 +37,7 @@
     "grunt-mocha-test": "^0.11.0",
     "indeed": "~1.0.1",
     "jshint-stylish": "^0.4.0",
+    "lodash": "^2.4.1",
     "mocha": "git://github.com/tandrewnichols/mocha.git#suppress-stack",
     "mocha-given": "git://github.com/tandrewnichols/mocha-given.git",
     "task-master": "^1.0.4",
