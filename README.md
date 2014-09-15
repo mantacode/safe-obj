@@ -6,6 +6,8 @@
 
 Underscore helpers to make object accessors safe
 
+As of v0.2.0, this module also works with lodash, though it requires using `_.safe(obj, path)` since `_(obj).safe(path)` triggers lodash's chaining.
+
 ## Install
 
 `npm install safe-obj --save`
