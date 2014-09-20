@@ -4,7 +4,7 @@ before_install:
 install:
   - "npm install npm@~1.4.23 -g"
   - "npm install grunt-cli codeclimate-test-reporter -g"
-  - "npm install"
+  - "npm install --ignore-scripts"
 script:
   - "grunt ci"
 node_js:
