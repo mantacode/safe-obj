@@ -242,6 +242,20 @@ describe 'underscore', ->
           When -> _(@obj).ensure('foo.bar', [undefined], { baz: 'quux' })
           Then -> expect(@obj.foo.bar).to.deep.equal { baz: 'quux' }
 
+        context 'different types', ->
+          Given -> @obj =
+            foo:
+              bar: [1, 2]
+          When -> _(@obj).ensure('foo.bar', [{ hello: 'world' }], { baz: 'quux' })
+          Then -> expect(@obj.foo.bar).to.deep.equal [1, 2]
+
+        context 'different array lengths', ->
+          Given -> @obj =
+            foo:
+              bar: [1, 2]
+          When -> _(@obj).ensure('foo.bar', [[1, 2, 3]], { baz: 'quux' })
+          Then -> expect(@obj.foo.bar).to.deep.equal [1, 2]
+
   describe '.allOf', ->
     context 'all present', ->
       Given -> @obj =
