@@ -6,14 +6,6 @@
 
 Underscore helpers to make object accessors safe
 
-As of v0.2.0, this module also works with lodash, though it requires using `_.safe(obj, path)` since `_(obj).safe(path)` triggers lodash's chaining.
-
-## Install
-
-`npm install safe-obj --save`
-
-## Usage
-
 I came (partly) from a Perl background where you could say `$obj->{thing}->{another_thing}->{more_things}`, and it would not blow up even if $obj was totally empty. Similarly, you could say `$obj->{thing}->{foo} = 'bar'`, even if $obj had no property called 'thing'. I don't miss everything about Perl, but I do miss that. In javascript, you'd have to say:
 
 ```javascript
@@ -22,13 +14,48 @@ if (obj && obj.thing && obj.thing.another_thing && obj.thing.another_thing.more_
 }
 ```
 
-`safe-obj` exports an object that can be mixed into underscore like this:
+So this module is basically auto-vivification for javascript.
+
+## Install
+
+`npm install safe-obj --save`
+
+## Usage
+
+### Server
+
+As of v1.0.0, this module works with both lodash and underscore, though it requires using `_.safe(obj, path)` with lodash since `_(obj).safe(path)` triggers lodash's chaining.
+
+`safe-obj` exports an object that can be mixed into underscore/lodash like this:
 
 ```javascript
 _.mixin(require('safe-obj'));
 ```
 
-that let's you access object properties with wild abandon. It has two functions, which are essentially opposites of one another.
+that let's you access object properties with wild abandon.
+
+### Client
+
+Additionally, as of v1.0.0, it works on the client side. If `window._` is defined (i.e. lodash or underscore has been loaded), `_.safe` will add an `_safe` property to it, which you can mix in with `_.mixin(_._safe)`.
+
+On the client, just include the script after underscore or lodash:
+
+```html
+<script src="/underscore.js"></script>
+<script src="path/to/safe-obj/dist/safe.js"></script>
+```
+
+and then mix it in:
+
+```html
+<script>
+  (function() {
+    _.mixin(_._safe);
+  })();
+</script>
+```
+
+## API
 
 ### Safe
 
