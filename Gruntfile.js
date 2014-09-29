@@ -7,4 +7,5 @@ module.exports = function(grunt) {
   grunt.registerTask('coverage', ['mochacov:html']);
   grunt.registerTask('ci', ['jshint:all', 'testem:ci:browser', 'mocha', 'travis']);
   grunt.registerTask('browser', ['testem:run:browser']);
+  grunt.registerTask('prepublish', ['uglify:dist', 'copy:safe']);
 };

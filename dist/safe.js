@@ -1,1 +1,165 @@
-!function(a){var b=function(a){return"function"==typeof a||"object"==typeof a&&!!a},c=function(a){return Array.isArray?Array.isArray(a):a instanceof Array||a&&a.constructor&&"Array"===a.constructor.name},d=function(a,b){var c,d=a.length;for(c=0;d>c;c++)if(b(a[c]))return!0;return!1},e=function(a,b){var c,d=a.length;for(c=0;d>c;c++)if(!b(a[c]))return!1;return!0},f=function i(a,b){if(a===b)return!0;if(typeof a!=typeof b)return!1;if("object"==typeof a){if(a instanceof Array){if(a.length!==b.length)return!1;var c,d=a.length;for(c=0;d>c;c++)if(!i(a[c],b[c]))return!1;return!0}for(var e in a)if(!(e in b&&i(a[e],b[e])))return!1;return!0}return!1},g=function(a,d){var e=[],f={},g=[].slice.call(d);return c(g[1])?(f=g[0],e=g[1]):(e=g,f=e.shift()),b(f)?a(e,function(a){return h.safe(f,a)}):!1},h={safe:function(a,c,d){if(!c)return d;a=b(a)?a:{};var e=c.split(".");if(1===e.length)return"undefined"==typeof a[e[0]]?d:null===a[e[0]]?"undefined"==typeof d?null:d:a[e.shift()];var f=e.shift();return b(a[f])?h.safe(a[f],e.join("."),d):d},expand:function(a,c,d){if(c&&"undefined"!=typeof d){a=b(a)&&null!==a?a:{};var e=c.split(".");if(1===e.length)a[e.shift()]=d;else{var f=e.shift();f in a||(a[f]={}),h.expand(a[f],e.join("."),d)}}},ensure:function(a,b,c,e){3===arguments.length&&(e=c,c=[]);var g=h.safe(a,b);("undefined"==typeof g||null===g||d(c,function(a){return f(g,a)}))&&h.expand(a,b,e)},allOf:function(){return g.apply(null,[e].concat(arguments))},anyOf:function(){return g.apply(null,[d].concat(arguments))},noneOf:function(){return!h.anyOf.apply(null,arguments)}};"undefined"!=typeof exports&&("undefined"!=typeof module&&module.exports&&(module.exports=h),exports._safe=h),a._=a._||{},a._._safe=h}(this);
+;(function(root) {
+
+  var isObject = function isObject(obj) {
+    // Implementation lifted from underscore
+    return typeof obj === 'function' || typeof obj === 'object' && !!obj;
+  };
+
+  var isArray = function isArray(arr) {
+    return Array.isArray ? Array.isArray(arr) : arr instanceof Array || (arr && arr.constructor && arr.constructor.name === 'Array');
+  };
+
+  var any = function any(list, func) {
+    var i;
+    var l = list.length;
+    for (i = 0; i < l; i++) {
+      if (func(list[i])) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  var every = function every(list, func) {
+    var i;
+    var l = list.length;
+    for (i = 0; i < l; i++) {
+      if (!func(list[i])) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  var isEqual = function isEqual(a, b) {
+    if (a === b) {
+      return true;
+    }
+
+    if (a.constructor !== b.constructor) {
+      return false;
+    }
+
+    if (typeof a === 'object') {
+      if (a instanceof Array) {
+        if (a.length !== b.length) {
+          return false;
+        }
+        var i;
+        var l = a.length;
+        for (i = 0; i < l; i++) {
+          if (!isEqual(a[i], b[i])) {
+            return false;
+          }
+        }
+        return true;
+      } else {
+        for (var k in a) {
+          if (!(k in b) || !isEqual(a[k], b[k])) {
+            return false;
+          }
+        }
+        return true;
+
+      }
+    } else {
+      return false;
+    }
+  };
+
+  var anyOrAll = function anyOrAll(method, _args) {
+    var paths = [], obj = {};
+
+    // args is of type Arguments
+    var args = [].slice.call(_args);
+
+    // Allow array or list of strings
+    if (isArray(args[1])) {
+      obj = args[0];
+      paths = args[1];
+    } else {
+      paths = args;
+      obj = paths.shift();
+    }
+
+    if (isObject(obj)) {
+      return method(paths, function(path) {
+        return _safe.safe(obj, path);
+      });
+    } else {
+      return false;
+    }
+  };
+
+  var _safe = {
+    safe: function (obj, path, otherwise) {
+      if (!path) {
+        return otherwise;
+      }
+      obj = isObject(obj) ? obj : {};
+      var props = path.split('.');
+      if (props.length === 1) {
+        if (typeof obj[props[0]] === 'undefined') {
+          return otherwise;
+        } else if (obj[props[0]] === null) {
+          return typeof otherwise === 'undefined' ? null : otherwise;
+        } else {
+          return obj[props.shift()];
+        }
+      } else {
+        var prop = props.shift();
+        return isObject(obj[prop]) ? _safe.safe(obj[prop], props.join('.'), otherwise) : otherwise;
+      }
+    },
+
+    expand: function (obj, path, thing) {
+      if (!path || typeof thing === 'undefined') {
+        return;
+      }
+      obj = isObject(obj) && obj !== null ? obj : {};
+      var props = path.split('.');
+      if (props.length === 1) {
+        obj[props.shift()] = thing;
+      } else {
+        var prop = props.shift();
+        if (!(prop in obj)) {
+          obj[prop] = {};
+        }
+        _safe.expand(obj[prop], props.join('.'), thing);
+      }
+    },
+
+    ensure: function (obj, path, disallowed, otherwise) {
+      if (arguments.length === 3) {
+        otherwise = disallowed;
+        disallowed = [];
+      }
+      var current = _safe.safe(obj, path);
+      if  (typeof current === 'undefined' || current === null || any(disallowed, function(item) { return isEqual(current, item); })) {
+        _safe.expand(obj, path, otherwise);
+      }
+    },
+
+    allOf: function() {
+      return anyOrAll.apply(null, [every].concat(arguments));
+    },
+
+    anyOf: function() {
+      return anyOrAll.apply(null, [any].concat(arguments));
+    },
+
+    noneOf: function() {
+      return !_safe.anyOf.apply(null, arguments);
+    }
+  };
+
+  if (typeof exports !== 'undefined') {
+    if (typeof module !== 'undefined' && module.exports) {
+      module.exports = _safe;
+    }
+    exports._safe = _safe;
+  }
+  
+  root._ = root._ || {};
+  root._._safe = _safe;
+})(this);
