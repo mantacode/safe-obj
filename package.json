@@ -1,7 +1,7 @@
 {
   "name": "safe-obj",
   "description": "Underscore helpers to make object accessors safe",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": {
     "name": "mantacode",
     "email": "code@manta.com",
