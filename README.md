@@ -42,7 +42,7 @@ On the client, just include the script after underscore or lodash:
 
 ```html
 <script src="/underscore.js"></script>
-<script src="path/to/safe-obj/dist/safe.js"></script>
+<script src="path/to/safe-obj/dist/safe.min.js"></script>
 ```
 
 and then mix it in:
