@@ -26,8 +26,7 @@
   "license": "MIT",
   "scripts": {
     "test": "grunt",
-    "prepublish": "grunt prepublish",
-    "publish": "if echo $USERNAME | grep -cq 'anichols'; then publisher run; fi"
+    "prepublish": "grunt prepublish"
   },
   "dependencies": {},
   "devDependencies": {
